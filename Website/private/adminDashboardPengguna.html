@@ -1,4 +1,3 @@
-<!-- INI SEBELUM DIGANTI -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -51,36 +50,6 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <!-- <tbody>
-                <tr th:each="pengguna : ${penggunaList}">
-                    <td th:text="${pengguna.nama}">Admin Utama</td>
-                    <td th:text="${pengguna.email}">admin@wsn.com</td>
-                    <td th:text="${pengguna.noTelepon}">081234567890</td>
-                    <td>
-                        <span class="badge" 
-                              th:classappend="${pengguna.tipeAkses == 'ADMIN'} ? 'badge-admin' : 'badge-user'"
-                              th:text="${pengguna.tipeAkses == 'ADMIN'} ? 'Admin' : 'Penyuluh'">
-                            Admin
-                        </span>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <a onclick="openEditUserModal()" class="icon-btn edit-btn">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                </svg>
-                            </a>
-                            <a th:href="@{/admin/hapus/{id}(id=${pengguna.id})}" 
-                               th:onclick="'return confirm(\'Apakah Anda yakin ingin menghapus pengguna ini?\');'"
-                               class="icon-btn delete-btn">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody> -->
             <tbody id="tabelPenggunaBody">
                 <tr>
                     <td colspan="3" style="text-align: center;">Sedang memuat data...</td>
@@ -92,53 +61,6 @@
             <p>Belum ada data pengguna</p>
         </div>
     </div>
-
-
-    <!-- <div class="modal-overlay" id="userModal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3>Tambah Pengguna</h3>
-                <button class="close-modal" onclick="closeModal()"></button>
-                <button type="button" class="btn-cancel-atas" onclick="closeModal()">X</button>
-
-            </div>
-            
-            <form th:action="@{/admin/simpan}" method="post">
-                <div class="form-group">
-                    <label>Nama</label>
-                    <input type="text" name="nama" class="form-control" placeholder="Masukkan nama" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email" class="form-control" placeholder="Masukkan email" required>
-                </div>
-
-                <div class="form-group">
-                    <label>No. Telepon</label>
-                    <input type="text" name="noTelepon" class="form-control" placeholder="Masukkan nomor telepon">
-                </div>
-
-                <div class="form-group">
-                    <label>Tipe Akses</label>
-                    <select name="tipeAkses" class="form-control">
-                        <option value="Penyuluh">Penyuluh</option>
-                        <option value="Admin">Admin</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
-                    <button type="submit" class="btn-save">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div> -->
 
     <div class="modal-overlay" id="userModal">
         <div class="modal-box">
@@ -234,38 +156,7 @@
         </div>
     </div>
 
-    <!-- <form id="formTambahUser" onsubmit="handleSimpan(event)"> ini nih
-        
-        <div class="form-group">
-            <label>Username / Nama</label>
-            <input type="text" name="username" class="form-control" placeholder="Masukkan username" required>
-        </div>
-        
-        <div class="form-group">
-            <label>Email (Opsional)</label>
-            <input type="email" name="email" class="form-control" placeholder="Masukkan email">
-        </div>
-
-        <div class="form-group">
-            <label>Tipe Akses</label>
-            <select name="tipeAkun" class="form-control">
-                <option value="penyuluh">Penyuluh</option>
-                <option value="admin">Admin</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
-        </div>
-
-        <div class="modal-footer">
-            <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
-            <button type="submit" class="btn-save">Simpan</button>
-        </div>
-    </form> -->
-
-    <script>
+<script>
         const userModal = document.getElementById('userModal');
 
         function openUserModal() {
@@ -276,7 +167,7 @@
             userModal.classList.remove('active');
         }
 
-        // Menutup modal jika area gelap di luar box diklik
+        // tutup modal jika klik area di luar box 
         userModal.addEventListener('click', function(e) {
             if (e.target === userModal) {
                 closeModal();
@@ -304,12 +195,11 @@
                 const result = await response.json();
                 tbody.innerHTML = '';
 
-                // Cek  suksesatau tdk
+                // Cek  sukses atau tdk
                 if (result.success && result.data.length > 0) {
                     
                     // Looping data dari db
                     result.data.forEach(user => {
-                        // Pastikan handle data kosong (null) biar tidak error
                         const emailVal = user.email || ''; 
                         const phoneVal = user.notelepon || ''; 
 

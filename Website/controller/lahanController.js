@@ -139,8 +139,7 @@ export const getLatestSensor = async (req, res) => {
 
         const data = await lahanService.getLatestSensor(id);
 
-        // Jika tidak ada data sensor, return success dengan data null
-        // Jangan return 404, karena ini bukan error
+        // Jika tidak ada data sensor, return success dengan data null (tidak return 404, karena ini bukan error)
         res.json({
             success: true,
             data: data || null,

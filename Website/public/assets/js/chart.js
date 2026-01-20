@@ -6,7 +6,7 @@
 const chartInstances = {};
 
 /**
- * Chart color configurations
+ * Chart color konfigurasi
  */
 const chartConfigs = {
     suhuudara: {
@@ -55,7 +55,7 @@ function initializeCharts() {
 }
 
 /**
- * Create single chart instance
+ * Buat single chart instance
  */
 function createChart(ctx, type) {
     const config = chartConfigs[type];
@@ -281,7 +281,7 @@ async function updateChartsByDate(lahanId, date) {
         console.error('Error updating charts:', error);
         hideLoading();
 
-        // Show placeholder on all charts
+        // Show placeholder untuk semua charts
         Object.keys(chartConfigs).forEach(type => {
             showChartPlaceholder(type, 'Gagal memuat data');
         });
@@ -310,7 +310,7 @@ function hexToRGBA(hex, alpha) {
 }
 
 /**
- * Destroy all chart instances
+ * Hapus semua chart instances
  */
 function destroyAllCharts() {
     Object.keys(chartInstances).forEach(type => {
@@ -330,11 +330,11 @@ function setupTabSwitching() {
 
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            // Remove active class from all tabs and containers
+            // Hapus active class dari semua tabs dan containers
             tabs.forEach(t => t.classList.remove('active'));
             chartContainers.forEach(c => c.classList.remove('active'));
 
-            // Add active class to clicked tab
+            // Tambah active class ke clicked tab
             tab.classList.add('active');
 
             // Show corresponding chart
