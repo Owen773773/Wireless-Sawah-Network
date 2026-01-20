@@ -1,4 +1,4 @@
-// main.js - Main script untuk halaman detail lahan (tanpa section petani)
+// main.js - Main script untuk halaman detail lahan 
 
 import {
     loadPageData,
@@ -17,7 +17,7 @@ import {
 
 // Global variables
 let currentLahanId = null;
-let currentLahanData = null; // Store lahan data for sensor status checks
+let currentLahanData = null; // Simpan data lahan untuk cek status sensor
 
 /**
  * Initialize page
@@ -39,7 +39,7 @@ async function initPage() {
 
         console.log('Page data loaded:', pageData);
 
-        // Update displays - handle null data 
+        // Update displays sekaligus handle null data 
         if (pageData.lahan) {
             currentLahanData = pageData.lahan; 
             updateLahanDisplay(pageData.lahan);
@@ -75,7 +75,7 @@ async function initPage() {
  * Setup event listeners
  */
 function setupEventListeners() {
-    // Date picker change event
+    //  event pemilihan/perubahan tanggal
     const dateInput = document.querySelector('.date-input');
     if (dateInput) {
         // Set ke tanggal hari ini
@@ -85,7 +85,7 @@ function setupEventListeners() {
 }
 
 /**
- * Handle date change
+ * Handle perubahan tanggal
  */
 async function handleDateChange(e) {
     const selectedDate = e.target.value;
@@ -121,11 +121,10 @@ function setupAutoRefresh() {
  */
 function showSuccess(message) {
     console.log('Success:', message);
-    // Implementasi notifikasi bisa ditambahkan
 }
 
 /**
- * Refresh sensor data manually
+ * Refresh sensor data manual
  */
 window.refreshSensorData = async function() {
     try {
@@ -142,7 +141,7 @@ window.refreshSensorData = async function() {
 }
 
 /**
- * Refresh chart data manually
+ * Refresh chart data manual
  */
 window.refreshChartData = async function() {
     try {
@@ -163,7 +162,7 @@ window.refreshChartData = async function() {
     }
 }
 
-// Initialize page when DOM is ready
+// Initialize page ketika DOM siap
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initPage);
 } else {

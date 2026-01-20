@@ -79,14 +79,12 @@ body {
     color: white;
 }
 
-/* Container */
 .container {
     max-width: 1200px;
     margin: 20px auto;
     padding: 0 20px;
-}
+} sensor
 
-/* Header Card */
 .header-card {
     background: linear-gradient(135deg, var(--primary-green) 0%, #008f39 100%);
     color: white;
@@ -153,7 +151,7 @@ body {
     font-weight: 600;
 }
 
-/* Metric colors untuk setiap tipe*/
+/* Metric colors untuk setiap tipe sensor*/
 .metric-card.temp-udara .metric-value { color: #FF8A00; }
 .metric-card.temp-udara .metric-status { color: #FF8A00; }
 

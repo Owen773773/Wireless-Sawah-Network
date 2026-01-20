@@ -80,7 +80,7 @@ async function getAllSensorHistory(lahanId, date) {
         };
     } catch (error) {
         console.error('Error getting sensor history:', error);
-        // Return struktur data kosong
+        // Return struktur data kosong kalau eror
         return {
             suhuudara: [],
             suhutanah: [],
@@ -126,7 +126,7 @@ async function loadPageData(lahanId) {
 
 
 /**
- * Update display dengan data sensor terbaru (6 sensors)
+ * Update display dengan data sensor
  */
 function updateSensorDisplay(sensorData, jenisLahan) {
     if (!sensorData) {
@@ -187,7 +187,7 @@ function updateSensorDisplay(sensorData, jenisLahan) {
 }
 
 /**
- * Show placeholder data when no sensor data available
+ * Show placeholder data kalo ga ada sensor 
  */
 function showPlaceholderData() {
     const metricCards = document.querySelectorAll('.metric-card');

@@ -42,8 +42,7 @@ export const getJenisLahanByNama = async (req, res) => {
 };
 
 /**
- * POST tambah jenis lahan
- * (khusus admin)
+ * POST tambah jenis lahan (khusus admin)
  */
 export const tambahJenisLahan = async (req, res) => {
     try {

@@ -128,7 +128,7 @@ function createLahanCard(lahan) {
 }
 
 /**
- * ========== LOAD SENSOR DATA ==========
+ * LOAD SENSOR DATA 
  */
 async function loadSensorData(lahanId) {
     try {
@@ -149,7 +149,7 @@ async function loadSensorData(lahanId) {
 }
 
 /**
- * ========== UPDATE SENSOR DISPLAY ==========
+ * UPDATE SENSOR DISPLAY 
  */
 function updateSensorDisplay(lahanId, sensorData) {
     const suhuUdaraEl = document.getElementById(`suhuudara-${lahanId}`);
@@ -178,13 +178,13 @@ function updateSensorDisplay(lahanId, sensorData) {
 }
 
 /**
- * ========== GO TO DETAIL PAGE ==========
+ * GO TO DETAIL PAGE 
  */
 function goToDetail(lahanId) {
     window.location.href = `/lahan/detail?id=${lahanId}`;
 }
 /**
- * ========== LOGOUT HANDLER ==========
+ * LOGOUT HANDLER 
  */
 async function handleLogout(e) {
     e.preventDefault();
@@ -201,7 +201,7 @@ async function handleLogout(e) {
 }
 
 /**
- * ========== LOADING INDICATOR ==========
+ * LOADING INDICATOR
  */
 function showLoading() {
     const cardGrid = document.querySelector('.card-grid');
@@ -270,7 +270,7 @@ function setupAutoRefresh() {
                 }
             }
         });
-    }, 60000); // 60 seconds
+    }, 60000); // 60 detik
 }
 
 async function initDashboard() {
@@ -284,11 +284,11 @@ async function initDashboard() {
         logoutBtn.addEventListener('click', handleLogout);
     }
 
-    // Setup auto refresh (optional)
+    // Setup auto refresh 
     setupAutoRefresh();
 }
 
-// Initialize when DOM is ready
+// Initialize ketika DOM sudah siap
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initDashboard);
 } else {
