@@ -1,0 +1,462 @@
+<!-- INI SEBELUM DIGANTI -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - WSN Management System</title>
+    <link rel="stylesheet" href="assets/css/Pengguna.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo-section">
+            <div class="logo"><img src="/assets/img/settingPNG.png"></div>
+            <div class="title-section">
+                <h1>Admin Dashboard</h1>
+                <p>WSN Management System</p>
+            </div>
+        </div>
+        <a href="Login.html" class="logout-btn">
+            <img src="assets/img/logoutPNG.png" class="icon">
+            Keluar
+        </a>
+    </div>
+
+    <div class="tab-section">
+        <a class="tab" href="/dashboard">
+            <img src="assets/img/locationBlackPNG.png" class="icon">
+            Lahan
+        </a>
+        <button class="tab active">
+            <img src="assets/img/penggunaWhitePNG.png" class="icon">
+            Pengguna
+        </button>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <h2>Manajemen Pengguna</h2>
+            <button class="add-btn" onclick="openUserModal()">
+                <tag style="font-size: 20px;">+</tag> Tambah Pengguna
+            </button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>No. Telepon</th>
+                    <th>Tipe Akses</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <!-- <tbody>
+                <tr th:each="pengguna : ${penggunaList}">
+                    <td th:text="${pengguna.nama}">Admin Utama</td>
+                    <td th:text="${pengguna.email}">admin@wsn.com</td>
+                    <td th:text="${pengguna.noTelepon}">081234567890</td>
+                    <td>
+                        <span class="badge" 
+                              th:classappend="${pengguna.tipeAkses == 'ADMIN'} ? 'badge-admin' : 'badge-user'"
+                              th:text="${pengguna.tipeAkses == 'ADMIN'} ? 'Admin' : 'Penyuluh'">
+                            Admin
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <a onclick="openEditUserModal()" class="icon-btn edit-btn">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                </svg>
+                            </a>
+                            <a th:href="@{/admin/hapus/{id}(id=${pengguna.id})}" 
+                               th:onclick="'return confirm(\'Apakah Anda yakin ingin menghapus pengguna ini?\');'"
+                               class="icon-btn delete-btn">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody> -->
+            <tbody id="tabelPenggunaBody">
+                <tr>
+                    <td colspan="3" style="text-align: center;">Sedang memuat data...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <p>Belum ada data pengguna</p>
+        </div>
+    </div>
+
+
+    <!-- <div class="modal-overlay" id="userModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Tambah Pengguna</h3>
+                <button class="close-modal" onclick="closeModal()"></button>
+                <button type="button" class="btn-cancel-atas" onclick="closeModal()">X</button>
+
+            </div>
+            
+            <form th:action="@{/admin/simpan}" method="post">
+                <div class="form-group">
+                    <label>Nama</label>
+                    <input type="text" name="nama" class="form-control" placeholder="Masukkan nama" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="Masukkan email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>No. Telepon</label>
+                    <input type="text" name="noTelepon" class="form-control" placeholder="Masukkan nomor telepon">
+                </div>
+
+                <div class="form-group">
+                    <label>Tipe Akses</label>
+                    <select name="tipeAkses" class="form-control">
+                        <option value="Penyuluh">Penyuluh</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn-save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div> -->
+
+    <div class="modal-overlay" id="userModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Tambah Pengguna</h3>
+                <button class="close-modal" onclick="closeModal()"></button>
+                <button type="button" class="btn-cancel-atas" onclick="closeModal()">X</button>
+            </div>
+            
+            <form id="formTambahUser" onsubmit="handleSimpan(event)">
+                <div class="form-group">
+                    <label>Username / Nama</label>
+                    <input type="text" name="username" class="form-control" placeholder="Masukkan username" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="Masukkan email">
+                </div>
+
+                <div class="form-group">
+                    <label>No. Telepon</label>
+                    <input type="text" name="noTelepon" class="form-control" placeholder="Masukkan nomor telepon">
+                </div>
+
+                <div class="form-group">
+                    <label>Tipe Akses</label>
+                    <select name="tipeAkun" class="form-control">
+                        <option value="penyuluh">Penyuluh</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn-save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="modal-overlay" id="editUserModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Edit Pengguna</h3>
+                <button class="close-modal" onclick="closeEditModal()"></button>
+                <button type="button" class="btn-cancel-atas" onclick="closeEditModal()">X</button>
+            </div>
+            
+            <form onsubmit="handleUpdate(event)">
+                
+                <input type="hidden" id="editIdPengguna" name="id">
+
+                <div class="form-group">
+                    <label>Username / Nama</label>
+                    <input type="text" id="editNama" name="username" class="form-control" required>
+                </div>
+                                
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="editEmail" name="email" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>No. Telepon</label>
+                    <input type="text" id="editTelepon" name="noTelepon" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Tipe Akses</label>
+                    <select id="editTipeAkses" name="tipeAkun" class="form-control">
+                        <option value="penyuluh">Penyuluh</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Password Baru (Kosongkan jika tidak ingin ganti)</label>
+                    <input type="password" name="password" class="form-control" placeholder="Isi hanya jika ingin ganti password">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeEditModal()">Batal</button>
+                    <button type="submit" class="btn-save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- <form id="formTambahUser" onsubmit="handleSimpan(event)"> ini nih
+        
+        <div class="form-group">
+            <label>Username / Nama</label>
+            <input type="text" name="username" class="form-control" placeholder="Masukkan username" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Email (Opsional)</label>
+            <input type="email" name="email" class="form-control" placeholder="Masukkan email">
+        </div>
+
+        <div class="form-group">
+            <label>Tipe Akses</label>
+            <select name="tipeAkun" class="form-control">
+                <option value="penyuluh">Penyuluh</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
+            <button type="submit" class="btn-save">Simpan</button>
+        </div>
+    </form> -->
+
+    <script>
+        const userModal = document.getElementById('userModal');
+
+        function openUserModal() {
+            userModal.classList.add('active');
+        }
+
+        function closeModal() {
+            userModal.classList.remove('active');
+        }
+
+        // Menutup modal jika area gelap di luar box diklik
+        userModal.addEventListener('click', function(e) {
+            if (e.target === userModal) {
+                closeModal();
+            }
+        });
+
+        const editUsermodal = document.getElementById('editUserModal');
+        function openEditUserModal() {
+            editUsermodal.classList.add('active');
+        }
+
+        function closeEditModal() {
+            editUsermodal.classList.remove('active');
+        }
+
+        const API_URL = '/api/pengguna';
+
+        // load data penguna
+        async function loadPengguna() {
+            const tbody = document.getElementById('tabelPenggunaBody');
+            
+            try {
+                // Minta data ke backend
+                const response = await fetch(API_URL);
+                const result = await response.json();
+                tbody.innerHTML = '';
+
+                // Cek  suksesatau tdk
+                if (result.success && result.data.length > 0) {
+                    
+                    // Looping data dari db
+                    result.data.forEach(user => {
+                        // Pastikan handle data kosong (null) biar tidak error
+                        const emailVal = user.email || ''; 
+                        const phoneVal = user.notelepon || ''; 
+
+                        const row = `
+                            <tr>
+                                <td>${user.username}</td>
+                                <td>${emailVal}</td> 
+                                <td>${phoneVal}</td>
+                                <td>
+                                    <span class="badge ${user.tipeakun === 'admin' ? 'badge-admin' : 'badge-user'}">
+                                        ${user.tipeakun}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button onclick="bukaModalEdit('${user.idpengguna}', '${user.username}', '${emailVal}', '${phoneVal}', '${user.tipeakun}')" 
+                                                class="icon-btn edit-btn">
+                                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                            </svg>
+                                        </button>
+                                        
+                                        <button onclick="hapusPengguna('${user.idpengguna}')" class="icon-btn delete-btn" style="border:none; background:none; cursor:pointer; color:red;">
+                                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:20px;">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                        tbody.innerHTML += row;
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Tidak ada data pengguna</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Gagal mengambil data dari server</td></tr>';
+            }
+        }
+
+        //simpan data
+        async function handleSimpan(event) {
+            event.preventDefault(); // Mencegah halaman refresh sendiri
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const dataKirim = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataKirim)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Pengguna berhasil ditambahkan!');
+                    closeModal();
+                    form.reset();//kosongkan form
+                    loadPengguna(); //refresh tabel otomatis
+                } else {
+                    alert('Gagal: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan server');
+            }
+        }
+
+        // hapus penguna
+        async function hapusPengguna(id) {
+            if (!confirm('Yakin ingin menghapus pengguna ini?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/${id}`, {
+                    method: 'DELETE'
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Pengguna berhasil dihapus');
+                    loadPengguna(); // Refresh tabel
+                } else {
+                    alert('Gagal menghapus: ' + result.message);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Gagal menghapus data');
+            }
+        }
+
+        // dijalankan ketika halaman dibuka
+        document.addEventListener('DOMContentLoaded', loadPengguna);
+
+        //edit modal dan isi data
+        function bukaModalEdit(id, username, email, telepon, tipe) {
+            //  input form dari parameter
+            document.getElementById('editIdPengguna').value = id;
+            document.getElementById('editNama').value = username;
+            document.getElementById('editEmail').value = (email === '-') ? '' : email;
+            document.getElementById('editTelepon').value = (telepon === '-') ? '' : telepon;
+            document.getElementById('editTipeAkses').value = tipe;
+            document.getElementById('editUserModal').classList.add('active');
+        }
+
+        async function handleUpdate(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('editIdPengguna').value;
+            const form = event.target;
+            const formData = new FormData(form);
+            const dataKirim = Object.fromEntries(formData.entries());
+
+            // Hapus password dari data kirim jika kosong (biar ga kereset jadi kosong di DB)
+            if (!dataKirim.password) {
+                delete dataKirim.password;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataKirim)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Data berhasil diperbarui!');
+                    closeEditModal();
+                    loadPengguna();
+                } else {
+                    alert('Gagal update: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat update data');
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editUserModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - WSN Management System</title>
+    <link rel="stylesheet" href="assets/css/Lahan.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo-section">
+            <div class="logo"><img src="assets/img/settingPNG.png"></div>
+            <div class="title-section">
+                <h1>Admin Dashboard</h1>
+                <p>WSN Management System</p>
+            </div>
+        </div>
+        <a href="Login.html" class="logout-btn">
+            <img src="assets/img/logoutPNG.png" class="icon">
+            Keluar
+        </a>
+    </div>
+
+    <div class="tab-section">
+        <button class="tab active">
+            <img src="assets/img/locationWhitePNG.png" class="icon">
+            Lahan
+        </button>
+        <a class="tab" href="/dashboardPengguna">
+            <img src="assets/img/penggunaBlackPNG.png" class="icon">
+            Pengguna
+        </a>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <h2>Manajemen Lahan</h2>
+            <button class="add-btn" onclick="openModal()">
+                <tag style="font-size: 20px;">+</tag> Tambah Lahan
+            </button>
+        </div>
+
+        <!-- <table>
+            <thead>
+                <tr>
+                    <th>Id Lahan</th>
+                    <th>Nama Lahan</th>
+                    <th>Pemilik</th>
+                    <th>Luas</th>
+                    <th>Jenis Lahan</th>
+                    <th>Penyuluh</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="lahan : ${lahanList}">
+                    <td th:text="${lahan.id}">1</td>
+                    <td th:text="${lahan.nama}">Lahan Admin</td>
+                    <td th:text="${lahan.pemilik}">admin@wsn.com</td>
+                    <td th:text="${lahan.luas}">430m<sup>2</sup></td>
+                    <td th:text="${lahan.jenis}">Kelapa</td>
+                    <td th:text="${lahan.penyuluh}">Jarwo</td>
+                    
+                    <td>
+                        <div class="action-buttons">
+                            <a onclick="openEditLahanModal()" class="icon-btn edit-btn">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                </svg>
+                            </a>
+                            <a th:href="@{/admin/hapus/{id}(id=${pengguna.id})}" 
+                               th:onclick="'return confirm(\'Apakah Anda yakin ingin menghapus pengguna ini?\');'"
+                               class="icon-btn delete-btn">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table> -->
+
+        <table id="tabelLahan">
+            <thead>
+                <tr>
+                    <th>Id Lahan</th>
+                    <th>Nama Lahan</th>
+                    <th>Pemilik</th>
+                    <th>Luas (m<sup>2</sup>)</th>
+                    <th>Jenis Lahan</th>
+                    <th>Penyuluh</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="tabelLahanBody">
+                <tr>
+                    <td colspan="7" style="text-align: center;">Sedang memuat data...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <p>Belum ada data lahan</p>
+        </div>
+
+        <!-- <div th:if="${#lists.isEmpty(lahanList)}" class="empty-state">
+            <p>Belum ada data lahan</p>
+        </div> -->
+    </div>
+
+    <!-- <div class="modal-overlay" id="userModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Tambah Lahan</h3>
+                <button class="close-modal" onclick="closeModal()"></button>
+                <button type="button" class="btn-cancel-atas" onclick="closeModal()">X</button>
+
+            </div>
+            
+            <form th:action="@{/admin/simpan}" method="post">
+                <div class="form-group">
+                    <label>Nama Lahan</label>
+                    <input type="text" name="namaLahan" class="form-control" placeholder="Masukkan nama lahan" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Alamat</label>
+                    <input type="email" name="alamat" class="form-control" placeholder="Masukkan alamat" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Pemilik</label>
+                    <input type="text" name="namaPemilik" class="form-control" placeholder="Masukkan nama pemilik">
+                </div>
+
+                <div class="form-group">
+                    <label>Luas</label>
+                    <input type="text" name="luas" class="form-control" placeholder="Contoh: 10 hektar">
+                </div>
+
+                <div class="form-group">
+                    <label>Jenis Tanaman</label>
+                    <input type="text" name="jenisTanaman" class="form-control" placeholder="Contoh: Padi, Strawberry">
+                </div>
+
+                <div class="form-group">
+                    <label>Penyuluh</label>
+                    <select name="penyuluh" class="form-control">
+                        <option value="" disabled selected>-- Pilih Penyuluh --</option>
+                        
+                        <option th:each="p : ${penyuluhList}" 
+                                th:value="${p.nama}" 
+                                th:text="${p.nama}">
+                                Nama Penyuluh
+                        </option>
+                    </select>
+                </div>
+                
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn-save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div> -->
+
+    <div class="modal-overlay" id="userModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Tambah Lahan</h3>
+                <button class="close-modal" onclick="closeModal()"></button>
+                <button type="button" class="btn-cancel-atas" onclick="closeModal()">X</button>
+            </div>
+            
+            <form id="formTambahLahan" onsubmit="handleSimpan(event)">
+                <div class="form-group">
+                    <label>Nama Lahan</label>
+                    <input type="text" name="namaSawah" class="form-control" placeholder="Contoh: Lahan Blok A" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Alamat</label>
+                    <input type="text" name="lokasi" class="form-control" placeholder="Masukkan lokasi" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Pemilik</label>
+                    <input type="text" name="namaPemilik" class="form-control" placeholder="Masukkan nama pemilik" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Luas (m<sup>2</sup>)</label>
+                    <input type="number" name="luas" class="form-control" step="0.01" placeholder="Contoh: 1000">
+                </div>
+
+                <div class="form-group">
+                    <label>Jenis Lahan</label>
+                    <select id="selectJenisTambah" name="jenis" class="form-control" required>
+                        <option value="" disabled selected>-- Pilih Jenis Lahan --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Penyuluh Penanggung Jawab</label>
+                    <select id="selectPenyuluhTambah" name="idPengguna" class="form-control" required>
+                        <option value="" disabled selected>-- Pilih Penyuluh --</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn-save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<!-- 
+    <div class="modal-overlay" id="editLahanModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Edit Lahan</h3>
+                <button class="close-modal" onclick="closeEditLahanModal()"></button>
+                <button type="button" class="btn-cancel-atas" onclick="closeEditLahanModal()">X</button>
+
+            </div>
+            
+            <form th:action="@{/admin/simpan}" method="post">
+                <div class="form-group">
+                    <label>Nama Lahan</label>
+                    <input type="text" name="namaLahan" class="form-control" placeholder="Masukkan nama lahan" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Alamat</label>
+                    <input type="email" name="alamat" class="form-control" placeholder="Masukkan alamat" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Pemilik</label>
+                    <input type="text" name="namaPemilik" class="form-control" placeholder="Masukkan nama pemilik">
+                </div>
+
+                <div class="form-group">
+                    <label>Luas</label>
+                    <input type="text" name="luas" class="form-control" placeholder="Contoh: 10 hektar">
+                </div>
+
+                <div class="form-group">
+                    <label>Jenis Tanaman</label>
+                    <input type="text" name="jenisTanaman" class="form-control" placeholder="Contoh: Padi, Strawberry">
+                </div>
+
+                <div class="form-group">
+                    <label>Penyuluh</label>
+                    <select name="penyuluh" class="form-control">
+                        <option value="" disabled selected>-- Pilih Penyuluh --</option>
+                        
+                        <option th:each="p : ${penyuluhList}" 
+                                th:value="${p.nama}" 
+                                th:text="${p.nama}">
+                                Nama Penyuluh
+                        </option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeEditLahanModal()">Batal</button>
+                    <button type="submit" class="btn-save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div> -->
+
+    <div class="modal-overlay" id="editLahanModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Edit Lahan</h3>
+                <button class="close-modal" onclick="closeEditLahanModal()"></button>
+                <button type="button" class="btn-cancel-atas" onclick="closeEditLahanModal()">X</button>
+            </div>
+            
+            <form onsubmit="handleUpdate(event)">
+                <div class="form-group">
+                    <label>Nama Lahan</label>
+                    <input type="text" id="editNama" name="namaSawah" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Alamat</label>
+                    <input type="text" id="editLokasi" name="lokasi" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Pemilik</label>
+                    <input type="text" id="editPemilik" name="namaPemilik" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Luas (m<sup>2</sup>)</label>
+                    <input type="number" id="editLuas" name="luas" step="0.01" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Jenis Lahan</label>
+                    <select id="editJenis" name="jenis" class="form-control" required>
+                        <option value="" disabled selected>-- Pilih Jenis Lahan --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Penyuluh</label>
+                    <select id="editPenyuluh" name="idPengguna" class="form-control">
+                        <option value="" disabled selected>-- Pilih Penyuluh --</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeEditLahanModal()">Batal</button>
+                    <button type="submit" class="btn-save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="hubungkanSensor">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Hubungkan Sensor Node</h3>
+                <button class="close-modal" onclick="closeHubungkanModal()"></button>
+                <button type="button" class="btn-cancel-atas" onclick="closeHubungkanModal()">X</button>
+
+            </div>
+            
+            <form th:action="@{/admin/simpan}" method="post">
+
+                <div class="form-group">
+                    <label>Tipe Data</label>
+                    <select name="tipeData" class="form-control">
+                        <option value="suhuTanah">Suhu Tanah</option>
+                        <option value="kelembapanTanah">Kelembapan Tanah</option>
+                        <option value="suhuUdara">Suhu Udara</option>
+                        <option value="kelembapanUdara">Kelembapan Udara</option>
+                        <option value="Oksigen">Oksigen</option>
+                        <option value="pH">pH</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>URL</label>
+                    <input type="text" name="urlLink" class="form-control" placeholder="Contoh: http://sensor.local atau http://192.168.1.100" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Port</label>
+                    <input type="text" name="port" class="form-control" placeholder="Contoh: 8080" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeHubungkanModal()">Batal</button>
+                    <button type="submit" class="btn-save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="modal-overlay" id="lihatModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Daftar Sensor Node</h3>
+                <button class="close-modal" onclick="closeLihatModal()"></button>
+                <button type="button" class="btn-cancel-atas" onclick="closeLihatModal()">X</button>
+            </div>
+            <h4 style="margin-bottom: 20px;">
+                Lahan: <span th:text="${namalahan}">Nama Lahan</span>    
+            </h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipe Data</th>
+                        <th>URL</th>
+                        <th>Port</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="sensor : ${sensorList}">
+                        <td th:text="${sensor.tipeData}">tipe sensor</td>
+                        <td th:text="${sensor.url}">sensor url</td>
+                        <td th:text="${sensor.port}">sensor port</td>
+                        <td>
+                            <div class="action-buttons">
+                                <a onclick="openEditSensorModal()" class="icon-btn edit-btn">
+                                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                    </svg>
+                                </a>
+                                <a th:href="@{/admin/hapus/{id}(id=${pengguna.id})}" 
+                                th:onclick="'return confirm(\'Apakah Anda yakin ingin menghapus pengguna ini?\');'"
+                                class="icon-btn delete-btn">
+                                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+            
+            <form th:action="@{/admin/simpan}" method="post">
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeLihatModal()">Tutup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="modal-overlay" id="editSensorModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Edit Sensor Node</h3>
+                <button class="close-modal" onclick="closeEditSensorModal()"></button>
+                <button type="button" class="btn-cancel-atas" onclick="closeEditSensorModal()">X</button>
+
+            </div>
+            
+            <form th:action="@{/admin/simpan}" method="post">
+
+                <div class="form-group">
+                    <label>Tipe Data</label>
+                    <select name="tipeData" class="form-control">
+                        <option value="suhuTanah">Suhu Tanah</option>
+                        <option value="kelembapanTanah">Kelembapan Tanah</option>
+                        <option value="suhuUdara">Suhu Udara</option>
+                        <option value="kelembapanUdara">Kelembapan Udara</option>
+                        <option value="Oksigen">Oksigen</option>
+                        <option value="pH">pH</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>URL</label>
+                    <input type="text" name="urlLink" class="form-control" th:value="${urlSensor}" placeholder="Contoh: http://sensor.local atau http://192.168.1.100" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Port</label>
+                    <input type="text" name="port" class="form-control" th:value="${portSensort}" placeholder="Contoh: 8080" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeEditSensorModal()">Batal</button>
+                    <button type="submit" class="btn-save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_LAHAN_BASE = '/api/lahan'; 
+        const API_PENGGUNA = '/api/pengguna'; 
+
+        // VARIABEL GLOBAL
+        let currentEditId = null;
+
+        // load data lahan
+        async function loadLahan() {
+            const tbody = document.getElementById('tabelLahanBody');
+            const emptyState = document.getElementById('emptyState');
+            const table = document.getElementById('tabelLahan');
+
+            try {
+                const response = await fetch(API_LAHAN_BASE);
+                const result = await response.json();
+
+                tbody.innerHTML = '';
+
+                if (result.success && result.data.length > 0) {
+                    table.style.display = 'table';
+                    emptyState.style.display = 'none';
+
+                    result.data.forEach(lahan => {
+                        const row = `
+                            <tr>
+                                <td>${lahan.idsawah}</td>
+                                <td>${lahan.namasawah || '-'}</td>
+                                <td>${lahan.namapemilik || '-'}</td>
+                                <td>${lahan.luas || '0'}</td> 
+                                <td>${lahan.jenis || '-'}</td>
+                                <td>${lahan.namapenyuluh || '-'}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button onclick="bukaModalEdit(
+                                            '${lahan.idsawah}', 
+                                            '${lahan.namasawah || ''}', 
+                                            '${lahan.lokasi || ''}', 
+                                            '${lahan.namapemilik || ''}', 
+                                            '${lahan.luas || 0}', 
+                                            '${lahan.jenis || ''}', 
+                                            '${lahan.idpengguna || ''}'
+                                        )" 
+                                        class="icon-btn edit-btn" style="background: #e7f1ff; border: none; padding: 5px; border-radius: 4px; cursor: pointer;">
+                                            <svg class="icon" fill="none" stroke="#007bff" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                            </svg>
+                                        </button>
+                                        <button onclick="hapusLahan('${lahan.idsawah}')" class="icon-btn delete-btn" style="background: #ffe6e6; border: none; padding: 5px; border-radius: 4px; cursor: pointer; margin-left: 5px;">
+                                            <svg class="icon" fill="none" stroke="#dc3545" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                        tbody.innerHTML += row;
+                    });
+                } else {
+                    table.style.display = 'none';
+                    emptyState.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error load lahan:', error);
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Gagal memuat data</td></tr>';
+            }
+        }
+
+        function bukaModalEdit(id, nama, lokasi, pemilik, luas, jenis, idPengguna) {
+            currentEditId = id; 
+
+            document.getElementById('editNama').value = nama;
+            document.getElementById('editLokasi').value = lokasi;
+            document.getElementById('editPemilik').value = pemilik;
+            document.getElementById('editLuas').value = luas;
+            document.getElementById('editJenis').value = jenis;
+
+            const selectPenyuluh = document.getElementById('editPenyuluh');
+            if (idPengguna && idPengguna !== 'null' && idPengguna !== '') {
+                selectPenyuluh.value = idPengguna;
+            } else {
+                selectPenyuluh.value = ""; 
+            }
+
+            openEditLahanModal();
+        }
+
+        async function handleUpdate(event) {
+            event.preventDefault();
+
+            if (!currentEditId) {
+                alert("ID Lahan tidak ditemukan. Refresh halaman.");
+                return;
+            }
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            if (data.idPengguna === "") {
+                data.idPengguna = null;
+            }
+
+            try {
+                const response = await fetch(`${API_LAHAN_BASE}/${currentEditId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Lahan berhasil diperbarui');
+                    closeEditLahanModal();
+                    loadLahan(); 
+                    currentEditId = null;
+                } else {
+                    const msg = result.message || result.error || "Terjadi kesalahan server";
+                    alert('Gagal: ' + msg);
+                }
+            } catch (error) {
+                alert('Terjadi kesalahan koneksi');
+                console.error(error);
+            }
+        }
+
+        // dropdown penyuluh
+        async function loadPenyuluhOptions() {
+            try {
+                const response = await fetch(API_PENGGUNA);
+                const result = await response.json();
+
+                if (result.success) {
+                    const selectTambah = document.getElementById('selectPenyuluhTambah');
+                    const selectEdit = document.getElementById('editPenyuluh');
+                    
+                    const defaultOpt = '<option value="" disabled selected>-- Pilih Penyuluh --</option>';
+                    selectTambah.innerHTML = defaultOpt;
+                    selectEdit.innerHTML = defaultOpt;
+
+                    const listPenyuluh = result.data.filter(u => u.tipeakun && u.tipeakun.toLowerCase() === 'penyuluh');
+                    listPenyuluh.forEach(p => {
+                        const option = `<option value="${p.idpengguna}">${p.username}</option>`;
+                        selectTambah.innerHTML += option;
+                        selectEdit.innerHTML += option;
+                    });
+                }
+            } catch (error) { console.error(error); }
+        }
+
+        // handle simpan
+        async function handleSimpan(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            if (data.idPengguna === "") data.idPengguna = null;
+
+            try {
+                const response = await fetch(`${API_LAHAN_BASE}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Lahan berhasil ditambahkan');
+                    closeModal();
+                    event.target.reset();
+                    loadLahan();
+                } else {
+                    const msg = result.message || result.error || "Gagal menyimpan";
+                    alert('Gagal: ' + msg);
+                }
+            } catch (error) { alert('Terjadi kesalahan server'); }
+        }
+
+        // hapus
+        async function hapusLahan(id) {
+            if(confirm('Yakin hapus lahan ini?')) {
+                try {
+                    await fetch(`${API_LAHAN_BASE}/${id}`, { method: 'DELETE' });
+                    loadLahan();
+                } catch (e) { alert('Gagal menghapus'); }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLahan();
+            loadPenyuluhOptions();
+            loadJenisLahanOptions(); 
+        });
+
+        const modal = document.getElementById('userModal');
+        const editLahanmodal = document.getElementById('editLahanModal');
+
+        function openModal() { modal.classList.add('active'); }
+        function closeModal() { modal.classList.remove('active'); }
+        function openEditLahanModal() { editLahanmodal.classList.add('active'); }
+        function closeEditLahanModal() { editLahanmodal.classList.remove('active'); }
+        
+        window.onclick = function(e) {
+            if (e.target == modal) closeModal();
+            if (e.target == editLahanmodal) closeEditLahanModal();
+        }
+
+        // === LOAD DROPDOWN JENIS LAHAN ===
+        async function loadJenisLahanOptions() {
+            try {
+                // Panggil API yang sudah ada di routes.js
+                const response = await fetch('/api/jenislahan'); 
+                const result = await response.json();
+
+                // Siapkan elemen dropdown
+                const selectTambah = document.getElementById('selectJenisTambah');
+                const selectEdit = document.getElementById('editJenis');
+                
+                // Reset opsi
+                const defaultOpt = '<option value="" disabled selected>-- Pilih Jenis Lahan --</option>';
+                if (selectTambah) selectTambah.innerHTML = defaultOpt;
+                if (selectEdit) selectEdit.innerHTML = defaultOpt;
+
+                if (result.success || Array.isArray(result)) {
+                    // Kadang response bentuknya {success: true, data: []} atau langsung array []
+                    // Sesuaikan dengan struktur return controller kamu
+                    const data = result.data || result; 
+
+                    data.forEach(item => {
+                        // Asumsi di DB tabel JenisLahan kolom kuncinya adalah 'jenis'
+                        const option = `<option value="${item.jenis}">${item.jenis}</option>`;
+                        
+                        if (selectTambah) selectTambah.innerHTML += option;
+                        if (selectEdit) selectEdit.innerHTML += option;
+                    });
+                }
+            } catch (error) { 
+                console.error("Gagal load jenis lahan:", error); 
+            }
+        }
+
+        
+    </script>
+</body>
+</html>

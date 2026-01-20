@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Wireless Sawah Network</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/Login.css">
+</head>
+<body>
+<img src="assets/img/background.jpg" alt="background" class="background">
+<div class="login-wrapper">
+    <div class="login-card">
+
+        <div class="login-header">
+            <div class="logo-circle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="white" style="display:none;"/> <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z" fill="white"/>
+                </svg>
+            </div>
+            <h2 class="titleLogin">WSN</h2>
+            <p class="subtitleLogin">Wireless Sawah Network</p>
+        </div>
+
+        <form method="post" class="login-form">
+
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Masukkan email atau nomor telepon" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Masukkan password" required>
+            </div>
+
+<!--            <div class="actions-row">-->
+<!--                <a href="#" class="forgot-password">Lupa Password?</a>-->
+<!--            </div>-->
+
+            <button type="submit" class="btn-login">Masuk</button>
+
+        </form>
+    </div>
+</div>
+</body>
+
+<script>
+    document.querySelector('.login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Disable button saat loading
+        const btnLogin = document.querySelector('.btn-login');
+        const originalText = btnLogin.textContent;
+        btnLogin.textContent = 'Memproses...';
+        btnLogin.disabled = true;
+
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                window.location.href = '/dashboard';
+            } else {
+                alert(data.message || 'Login gagal');
+                btnLogin.textContent = originalText;
+                btnLogin.disabled = false;
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('Terjadi kesalahan saat login');
+            btnLogin.textContent = originalText;
+            btnLogin.disabled = false;
+        }
+    });
+</script>
+
+</html>

@@ -1,0 +1,176 @@
+// main.js - Main script untuk halaman detail lahan (tanpa section petani)
+
+import {
+    loadPageData,
+    updateSensorDisplay,
+    updateLahanDisplay,
+    getSensorData,
+    showLoading,
+    hideLoading,
+    showError
+} from './api.js';
+
+import {
+    initChartModule,
+    updateChartsByDate
+} from './chart.js';
+
+// Global variables
+let currentLahanId = null;
+let currentLahanData = null; // Store lahan data for sensor status checks
+
+/**
+ * Initialize page
+ */
+async function initPage() {
+    try {
+        // Get lahan ID from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        currentLahanId = parseInt(urlParams.get('id'));
+
+        if (!currentLahanId) {
+            throw new Error('ID lahan tidak ditemukan');
+        }
+
+        showLoading();
+
+        // Load all page data
+        const pageData = await loadPageData(currentLahanId);
+
+        console.log('Page data loaded:', pageData);
+
+        // Update displays - handle null data gracefully
+        if (pageData.lahan) {
+            currentLahanData = pageData.lahan; // Store for later use
+            updateLahanDisplay(pageData.lahan);
+        }
+
+        if (pageData.sensor && pageData.sensor.data) {
+            updateSensorDisplay(pageData.sensor.data, currentLahanData);
+        } else if (pageData.sensor) {
+            updateSensorDisplay(pageData.sensor, currentLahanData);
+        } else {
+            updateSensorDisplay(null, currentLahanData);
+        }
+
+        // Initialize charts with history data
+        initChartModule(currentLahanId, pageData.history);
+
+        // Setup event listeners
+        setupEventListeners();
+
+        // Setup auto refresh (optional)
+        setupAutoRefresh();
+
+        hideLoading();
+
+    } catch (error) {
+        console.error('Error initializing page:', error);
+        hideLoading();
+        showError('Gagal memuat data halaman');
+    }
+}
+
+/**
+ * Setup event listeners
+ */
+function setupEventListeners() {
+    // Date picker change event
+    const dateInput = document.querySelector('.date-input');
+    if (dateInput) {
+        // Set to today's date
+        dateInput.valueAsDate = new Date();
+        dateInput.addEventListener('change', handleDateChange);
+    }
+}
+
+/**
+ * Handle date change
+ */
+async function handleDateChange(e) {
+    const selectedDate = e.target.value;
+
+    try {
+        showLoading();
+        await updateChartsByDate(currentLahanId, selectedDate);
+        hideLoading();
+    } catch (error) {
+        console.error('Error updating charts:', error);
+        hideLoading();
+        showError('Gagal memuat data grafik');
+    }
+}
+
+/**
+ * Setup auto refresh untuk data sensor
+ * Refresh setiap 60 detik
+ */
+function setupAutoRefresh() {
+    setInterval(async () => {
+        try {
+            const sensorData = await getSensorData(currentLahanId);
+            updateSensorDisplay(sensorData.data || sensorData, currentLahanData);
+        } catch (error) {
+            console.error('Auto refresh error:', error);
+        }
+    }, 30000); // 30 seconds
+}
+
+/**
+ * Show success message
+ */
+function showSuccess(message) {
+    console.log('Success:', message);
+    // Implementasi notifikasi bisa ditambahkan
+}
+
+/**
+ * Refresh sensor data manually
+ */
+window.refreshSensorData = async function() {
+    try {
+        showLoading();
+        const sensorData = await getSensorData(currentLahanId);
+        updateSensorDisplay(sensorData.data || sensorData, currentLahanData);
+        hideLoading();
+        showSuccess('Data sensor berhasil diperbarui');
+    } catch (error) {
+        console.error('Error refreshing sensor data:', error);
+        hideLoading();
+        showError('Gagal memperbarui data sensor');
+    }
+}
+
+/**
+ * Refresh chart data manually
+ */
+window.refreshChartData = async function() {
+    try {
+        showLoading();
+
+        const dateInput = document.querySelector('.date-input');
+        const selectedDate = dateInput ? dateInput.value : new Date().toISOString().split('T')[0];
+
+        await updateChartsByDate(currentLahanId, selectedDate);
+
+        hideLoading();
+        showSuccess('Data grafik berhasil diperbarui');
+
+    } catch (error) {
+        console.error('Error refreshing chart data:', error);
+        hideLoading();
+        showError('Gagal memperbarui data grafik');
+    }
+}
+
+// Initialize page when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPage);
+} else {
+    initPage();
+}
+
+// Export only initPage (refreshSensorData & refreshChartData are attached to window)
+export {
+    initPage
+};

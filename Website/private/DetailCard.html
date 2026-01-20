@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Lahan - WSN Dashboard</title>
+    <link rel="stylesheet" href="/assets/css/Detail.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Main JS Module -->
+    <script type="module" src="/assets/js/main.js"></script>
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-left">
+        <div class="logo-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z" fill="white"/>
+            </svg>
+        </div>
+        <div class="brand-info">
+            <div class="brand-name">WSN Dashboard</div>
+            <div class="brand-tagline">Wireless Sawah Network</div>
+        </div>
+    </div>
+    <a href="/dashboard" class="btn-back">
+        Kembali
+    </a>
+</nav>
+
+<div class="container">
+    <!-- Header Card -->
+    <div class="header-card">
+        <h1>-</h1>
+        <div class="header-info">
+            <div class="info-item">
+                <span>Alamat: -</span>
+            </div>
+            <div class="info-item">
+                <span>Luas: -<sup>2</sup></span>
+            </div>
+            <div class="info-item">
+                <span>Tanam: -</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Metrics Grid - 6 metrics -->
+    <div class="metrics-grid">
+        <div class="metric-card temp-udara">
+            <div class="metric-label">Suhu Udara</div>
+            <div class="metric-value">-°C</div>
+            <div class="metric-status">Normal</div>
+        </div>
+        <div class="metric-card temp-tanah">
+            <div class="metric-label">Suhu Tanah</div>
+            <div class="metric-value">-°C</div>
+            <div class="metric-status">Normal</div>
+        </div>
+        <div class="metric-card hum-tanah">
+            <div class="metric-label">Kelembapan Tanah</div>
+            <div class="metric-value">-%</div>
+            <div class="metric-status">Normal</div>
+        </div>
+        <div class="metric-card hum-udara">
+            <div class="metric-label">Kelembapan Udara</div>
+            <div class="metric-value">-%</div>
+            <div class="metric-status">Normal</div>
+        </div>
+        <div class="metric-card cahaya">
+            <div class="metric-label">Cahaya</div>
+            <div class="metric-value">-%</div>
+            <div class="metric-status">Normal</div>
+        </div>
+        <div class="metric-card ph">
+            <div class="metric-label">pH Tanah</div>
+            <div class="metric-value">-</div>
+            <div class="metric-status">Normal</div>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="chart-section">
+        <div class="chart-header">
+            <h2 class="chart-title">Grafik Data Sensor</h2>
+            <input type="date" class="date-input" value="2025-01-20">
+        </div>
+
+        <!-- Tabs - 6 sensors -->
+        <div class="tabs">
+            <button class="tab active" data-chart="suhuudara">Suhu Udara</button>
+            <button class="tab" data-chart="suhutanah">Suhu Tanah</button>
+            <button class="tab" data-chart="kelembapantanah">Kelembapan Tanah</button>
+            <button class="tab" data-chart="kelembapanudara">Kelembapan Udara</button>
+            <button class="tab" data-chart="cahaya">Cahaya</button>
+            <button class="tab" data-chart="ph">pH Tanah</button>
+        </div>
+
+        <!-- Chart Containers - 6 sensors -->
+        <div id="chart-suhuudara" class="chart-container active">
+            <canvas id="canvas-suhuudara"></canvas>
+        </div>
+        <div id="chart-suhutanah" class="chart-container">
+            <canvas id="canvas-suhutanah"></canvas>
+        </div>
+        <div id="chart-kelembapantanah" class="chart-container">
+            <canvas id="canvas-kelembapantanah"></canvas>
+        </div>
+        <div id="chart-kelembapanudara" class="chart-container">
+            <canvas id="canvas-kelembapanudara"></canvas>
+        </div>
+        <div id="chart-cahaya" class="chart-container">
+            <canvas id="canvas-cahaya"></canvas>
+        </div>
+        <div id="chart-ph" class="chart-container">
+            <canvas id="canvas-ph"></canvas>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
