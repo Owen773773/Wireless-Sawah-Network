@@ -24,7 +24,7 @@ let currentLahanData = null; // Store lahan data for sensor status checks
  */
 async function initPage() {
     try {
-        // Get lahan ID from URL parameter
+        // Get lahan ID dari URL parameter
         const urlParams = new URLSearchParams(window.location.search);
         currentLahanId = parseInt(urlParams.get('id'));
 
@@ -39,9 +39,9 @@ async function initPage() {
 
         console.log('Page data loaded:', pageData);
 
-        // Update displays - handle null data gracefully
+        // Update displays - handle null data 
         if (pageData.lahan) {
-            currentLahanData = pageData.lahan; // Store for later use
+            currentLahanData = pageData.lahan; 
             updateLahanDisplay(pageData.lahan);
         }
 
@@ -59,7 +59,7 @@ async function initPage() {
         // Setup event listeners
         setupEventListeners();
 
-        // Setup auto refresh (optional)
+        // Setup auto refresh
         setupAutoRefresh();
 
         hideLoading();
@@ -78,7 +78,7 @@ function setupEventListeners() {
     // Date picker change event
     const dateInput = document.querySelector('.date-input');
     if (dateInput) {
-        // Set to today's date
+        // Set ke tanggal hari ini
         dateInput.valueAsDate = new Date();
         dateInput.addEventListener('change', handleDateChange);
     }
@@ -170,7 +170,7 @@ if (document.readyState === 'loading') {
     initPage();
 }
 
-// Export only initPage (refreshSensorData & refreshChartData are attached to window)
+// Export initPage 
 export {
     initPage
 };

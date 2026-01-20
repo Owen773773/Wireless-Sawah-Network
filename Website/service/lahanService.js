@@ -4,7 +4,7 @@ export async function getAllLahan() {
   return await lahanRepo.getAllLahan();
 }
 
-// isi datanya luad, lokasi, nama pemilik, jenis, idPengguna
+// isi datanya luas, lokasi, nama pemilik, jenis, idPengguna
 export async function simpanLahan(data) {
   return await lahanRepo.simpanLahan(data);
 }

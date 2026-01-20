@@ -1,4 +1,4 @@
-// api.js - Handler untuk fetch data dari API (Compatible with backend)
+// api.js - Handler untuk fetch data dari API 
 
 const API_BASE_URL = '/api';
 
@@ -64,7 +64,7 @@ async function getAllSensorHistory(lahanId, date) {
                 .then(response => response.data || response)
                 .catch(err => {
                     console.warn(`Failed to fetch ${type}:`, err);
-                    return []; // Return empty array on error
+                    return []; // Return array kosong kalo eror
                 })
         );
 
@@ -80,7 +80,7 @@ async function getAllSensorHistory(lahanId, date) {
         };
     } catch (error) {
         console.error('Error getting sensor history:', error);
-        // Return empty data structure
+        // Return struktur data kosong
         return {
             suhuudara: [],
             suhutanah: [],
@@ -302,7 +302,6 @@ function hideLoading() {
  * Show error message
  */
 function showError(message) {
-    // Bisa diganti dengan toast/notification library yang lebih baik
     const errorContainer = document.createElement('div');
     errorContainer.style.cssText = `
         position: fixed;
@@ -329,7 +328,7 @@ function showError(message) {
 
     document.body.appendChild(errorContainer);
 
-    // Auto remove after 5 seconds
+    // Auto remove setelah 5 detik
     setTimeout(() => {
         errorContainer.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => errorContainer.remove(), 300);

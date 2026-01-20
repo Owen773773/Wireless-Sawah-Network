@@ -138,28 +138,7 @@ export const getLatestSensor = async (idsawah) => {
 };
 
 // data sensor historis
-// export const getSensorHistory = async (idsawah, type, date) => {
-//   // whitelist kolom biar aman
-//   const allowedTypes = ["suhu", "ph", "oksigen", "kelembapan"];
-//   if (!allowedTypes.includes(type)) {
-//     throw new Error("Tipe sensor tidak valid");
-//   }
-//
-//   const query = `
-//     SELECT
-//       timestamp,
-//       ${type}
-//     FROM DataSensor
-//     WHERE idsawah = $1
-//       AND DATE(timestamp) = $2
-//     ORDER BY timestamp
-//   `;
-//
-//   const result = await pool.query(query, [idsawah, date]);
-//   return result.rows;
-// };
 export const getSensorHistory = async (idsawah, type, date) => {
-    // Map frontend sensor names to database columns (case-sensitive PostgreSQL)
     const sensorMap = {
         'suhuudara': 'suhuudara',
         'suhutanah': 'suhutanah',

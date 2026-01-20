@@ -40,47 +40,6 @@
             </button>
         </div>
 
-        <!-- <table>
-            <thead>
-                <tr>
-                    <th>Id Lahan</th>
-                    <th>Nama Lahan</th>
-                    <th>Pemilik</th>
-                    <th>Luas</th>
-                    <th>Jenis Lahan</th>
-                    <th>Penyuluh</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="lahan : ${lahanList}">
-                    <td th:text="${lahan.id}">1</td>
-                    <td th:text="${lahan.nama}">Lahan Admin</td>
-                    <td th:text="${lahan.pemilik}">admin@wsn.com</td>
-                    <td th:text="${lahan.luas}">430m<sup>2</sup></td>
-                    <td th:text="${lahan.jenis}">Kelapa</td>
-                    <td th:text="${lahan.penyuluh}">Jarwo</td>
-                    
-                    <td>
-                        <div class="action-buttons">
-                            <a onclick="openEditLahanModal()" class="icon-btn edit-btn">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                </svg>
-                            </a>
-                            <a th:href="@{/admin/hapus/{id}(id=${pengguna.id})}" 
-                               th:onclick="'return confirm(\'Apakah Anda yakin ingin menghapus pengguna ini?\');'"
-                               class="icon-btn delete-btn">
-                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table> -->
-
         <table id="tabelLahan">
             <thead>
                 <tr>
@@ -104,67 +63,7 @@
             <p>Belum ada data lahan</p>
         </div>
 
-        <!-- <div th:if="${#lists.isEmpty(lahanList)}" class="empty-state">
-            <p>Belum ada data lahan</p>
-        </div> -->
     </div>
-
-    <!-- <div class="modal-overlay" id="userModal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3>Tambah Lahan</h3>
-                <button class="close-modal" onclick="closeModal()"></button>
-                <button type="button" class="btn-cancel-atas" onclick="closeModal()">X</button>
-
-            </div>
-            
-            <form th:action="@{/admin/simpan}" method="post">
-                <div class="form-group">
-                    <label>Nama Lahan</label>
-                    <input type="text" name="namaLahan" class="form-control" placeholder="Masukkan nama lahan" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Alamat</label>
-                    <input type="email" name="alamat" class="form-control" placeholder="Masukkan alamat" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Nama Pemilik</label>
-                    <input type="text" name="namaPemilik" class="form-control" placeholder="Masukkan nama pemilik">
-                </div>
-
-                <div class="form-group">
-                    <label>Luas</label>
-                    <input type="text" name="luas" class="form-control" placeholder="Contoh: 10 hektar">
-                </div>
-
-                <div class="form-group">
-                    <label>Jenis Tanaman</label>
-                    <input type="text" name="jenisTanaman" class="form-control" placeholder="Contoh: Padi, Strawberry">
-                </div>
-
-                <div class="form-group">
-                    <label>Penyuluh</label>
-                    <select name="penyuluh" class="form-control">
-                        <option value="" disabled selected>-- Pilih Penyuluh --</option>
-                        
-                        <option th:each="p : ${penyuluhList}" 
-                                th:value="${p.nama}" 
-                                th:text="${p.nama}">
-                                Nama Penyuluh
-                        </option>
-                    </select>
-                </div>
-                
-
-                <div class="modal-footer">
-                    <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
-                    <button type="submit" class="btn-save">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div> -->
 
     <div class="modal-overlay" id="userModal">
         <div class="modal-box">
@@ -216,62 +115,6 @@
             </form>
         </div>
     </div>
-<!-- 
-    <div class="modal-overlay" id="editLahanModal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3>Edit Lahan</h3>
-                <button class="close-modal" onclick="closeEditLahanModal()"></button>
-                <button type="button" class="btn-cancel-atas" onclick="closeEditLahanModal()">X</button>
-
-            </div>
-            
-            <form th:action="@{/admin/simpan}" method="post">
-                <div class="form-group">
-                    <label>Nama Lahan</label>
-                    <input type="text" name="namaLahan" class="form-control" placeholder="Masukkan nama lahan" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Alamat</label>
-                    <input type="email" name="alamat" class="form-control" placeholder="Masukkan alamat" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Nama Pemilik</label>
-                    <input type="text" name="namaPemilik" class="form-control" placeholder="Masukkan nama pemilik">
-                </div>
-
-                <div class="form-group">
-                    <label>Luas</label>
-                    <input type="text" name="luas" class="form-control" placeholder="Contoh: 10 hektar">
-                </div>
-
-                <div class="form-group">
-                    <label>Jenis Tanaman</label>
-                    <input type="text" name="jenisTanaman" class="form-control" placeholder="Contoh: Padi, Strawberry">
-                </div>
-
-                <div class="form-group">
-                    <label>Penyuluh</label>
-                    <select name="penyuluh" class="form-control">
-                        <option value="" disabled selected>-- Pilih Penyuluh --</option>
-                        
-                        <option th:each="p : ${penyuluhList}" 
-                                th:value="${p.nama}" 
-                                th:text="${p.nama}">
-                                Nama Penyuluh
-                        </option>
-                    </select>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn-cancel" onclick="closeEditLahanModal()">Batal</button>
-                    <button type="submit" class="btn-save">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div> -->
 
     <div class="modal-overlay" id="editLahanModal">
         <div class="modal-box">
@@ -666,14 +509,14 @@
             if (e.target == editLahanmodal) closeEditLahanModal();
         }
 
-        // === LOAD DROPDOWN JENIS LAHAN ===
+        // LOAD DROPDOWN JENIS LAHAN 
         async function loadJenisLahanOptions() {
             try {
-                // Panggil API yang sudah ada di routes.js
+                // Panggil API di routes.js
                 const response = await fetch('/api/jenislahan'); 
                 const result = await response.json();
 
-                // Siapkan elemen dropdown
+                // Elemen dropdown
                 const selectTambah = document.getElementById('selectJenisTambah');
                 const selectEdit = document.getElementById('editJenis');
                 
@@ -683,12 +526,9 @@
                 if (selectEdit) selectEdit.innerHTML = defaultOpt;
 
                 if (result.success || Array.isArray(result)) {
-                    // Kadang response bentuknya {success: true, data: []} atau langsung array []
-                    // Sesuaikan dengan struktur return controller kamu
                     const data = result.data || result; 
 
                     data.forEach(item => {
-                        // Asumsi di DB tabel JenisLahan kolom kuncinya adalah 'jenis'
                         const option = `<option value="${item.jenis}">${item.jenis}</option>`;
                         
                         if (selectTambah) selectTambah.innerHTML += option;
@@ -698,9 +538,7 @@
             } catch (error) { 
                 console.error("Gagal load jenis lahan:", error); 
             }
-        }
-
-        
+        }        
     </script>
 </body>
 </html>
